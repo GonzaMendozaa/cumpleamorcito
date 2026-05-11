@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- ✏️ EDITAR: Cambia [NOMBRE] por el nombre de tu novia -->
+  <title>💖 Feliz Cumpleaños, [NOMBRE]! 💖</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+  <div class="scanlines"></div>
+
+  <!-- ── NAVIGATION ──────────────────────────────────────── -->
+  <nav class="pixel-nav">
+    <button class="nav-btn active" data-section="carta" onclick="switchSection('carta')">
+      💌 CARTA
+    </button>
+    <span class="nav-divider">♥</span>
+    <button class="nav-btn" data-section="regalo" onclick="switchSection('regalo')">
+      🎁 REGALO
+    </button>
+  </nav>
+
+  <!-- ── HERO ─────────────────────────────────────────────── -->
+  <header class="hero">
+    <div class="hero-heart">♥</div>
+    <!-- ✏️ EDITAR: Cambia [NOMBRE] por el nombre de tu novia -->
+    <h1 class="hero-title">
+      ¡FELIZ<br>CUMPLEAÑOS!<br>
+      <span class="hero-name">[NOMBRE]</span>
+    </h1>
+    <div class="hero-stars">✦ ✦ ✦ ✦ ✦</div>
+  </header>
+
+  <!-- ── MAIN ──────────────────────────────────────────────── -->
+  <main>
+
+    <!-- ══════════════════════════════════════════════════════
+         SECCIÓN 1 — CARTA DE AMOR
+         ══════════════════════════════════════════════════════ -->
+    <section id="carta" class="section active">
+
+      <div class="section-heading">💌 MI CARTA PARA TI</div>
+
+      <!-- ✏️ EDITAR: Escribe tu carta aquí dentro -->
+      <div class="letter-box">
+        <div class="letter-deco">♥ · ♥ · ♥ · ♥ · ♥</div>
+
+        <p class="letter-open">Mi amor,</p>
+
+        <p>
+          Hoy es tu día especial y quería que supieras cuánto
+          significas para mí. Cada momento a tu lado es un regalo
+          que no cambiaría por nada en el mundo.
+        </p>
+        <p>
+          Tu sonrisa ilumina cada uno de mis días y tu forma de ver
+          la vida me hace querer ser mejor persona. Eres lo más
+          bonito que me ha pasado.
+        </p>
+        <p>
+          En este día tan especial, quiero que sepas que te amo más
+          de lo que las palabras pueden expresar. Gracias por estar
+          en mi vida.
+        </p>
+        <p>
+          Que este cumpleaños sea tan maravilloso como lo eres tú
+          para mí cada día. ¡Feliz cumpleaños, amor!
+        </p>
+
+        <!-- ✏️ EDITAR: Pon tu nombre al final -->
+        <p class="letter-close">
+          Con todo mi amor, ♥<br>
+          <span class="letter-signature">[Tu nombre]</span>
+        </p>
+
+        <div class="letter-deco bottom">♥ · ♥ · ♥ · ♥ · ♥</div>
+      </div>
+
+      <!-- ── GALERÍA DE FOTOS ────────────────────────────────── -->
+      <div class="section-heading photos-heading">📸 NUESTROS MOMENTOS</div>
+
+      <!--
+        ✏️ CÓMO AGREGAR FOTOS:
+           1. Crea una carpeta llamada "fotos" en este directorio
+           2. Agrega tus fotos con los nombres foto1.jpg, foto2.jpg, etc.
+           3. Cambia los captions por frases especiales
+           Las fotos se muestran automáticamente; si no hay foto, se muestra un ícono de cámara.
+      -->
+      <div class="photo-grid">
+
+        <div class="photo-frame">
+          <div class="photo-img-wrap">
+            <div class="photo-placeholder">📷</div>
+            <img src="fotos/foto1.jpg" alt="Foto 1" onerror="this.style.opacity='0'">
+          </div>
+          <!-- ✏️ EDITAR: Caption de la foto -->
+          <p class="photo-caption">✨ Momento especial ✨</p>
+        </div>
+
+        <div class="photo-frame">
+          <div class="photo-img-wrap">
+            <div class="photo-placeholder">📷</div>
+            <img src="fotos/foto2.jpg" alt="Foto 2" onerror="this.style.opacity='0'">
+          </div>
+          <p class="photo-caption">💕 Mi favorita</p>
+        </div>
+
+        <div class="photo-frame">
+          <div class="photo-img-wrap">
+            <div class="photo-placeholder">📷</div>
+            <img src="fotos/foto3.jpg" alt="Foto 3" onerror="this.style.opacity='0'">
+          </div>
+          <p class="photo-caption">🌟 Para siempre</p>
+        </div>
+
+        <div class="photo-frame">
+          <div class="photo-img-wrap">
+            <div class="photo-placeholder">📷</div>
+            <img src="fotos/foto4.jpg" alt="Foto 4" onerror="this.style.opacity='0'">
+          </div>
+          <p class="photo-caption">💖 Te quiero</p>
+        </div>
+
+        <div class="photo-frame">
+          <div class="photo-img-wrap">
+            <div class="photo-placeholder">📷</div>
+            <img src="fotos/foto5.jpg" alt="Foto 5" onerror="this.style.opacity='0'">
+          </div>
+          <p class="photo-caption">🎀 Nuestra historia</p>
+        </div>
+
+        <div class="photo-frame">
+          <div class="photo-img-wrap">
+            <div class="photo-placeholder">📷</div>
+            <img src="fotos/foto6.jpg" alt="Foto 6" onerror="this.style.opacity='0'">
+          </div>
+          <p class="photo-caption">💝 Siempre juntos</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         SECCIÓN 2 — REGALO SORPRESA
+         ══════════════════════════════════════════════════════ -->
+    <section id="regalo" class="section">
+
+      <div class="section-heading">🎁 TU REGALO SORPRESA</div>
+
+      <p class="gift-hint">¡Haz clic en la caja para descubrir tu regalo!</p>
+
+      <div class="gift-scene">
+
+        <!-- Caja animada (clic para abrir) -->
+        <div class="gift-box" id="gift-box" onclick="openGift()">
+          <div class="gift-lid" id="gift-lid">
+            <span class="gift-bow">🎀</span>
+          </div>
+          <div class="gift-body">
+            <div class="gift-ribbon-v"></div>
+            <div class="gift-ribbon-h"></div>
+          </div>
+        </div>
+
+        <!-- ✏️ EDITAR: Aquí va el contenido del regalo -->
+        <div class="gift-reveal" id="gift-reveal">
+          <div class="reveal-icon">🌟</div>
+
+          <!-- ✏️ EDITAR: Título del regalo -->
+          <h3 class="reveal-title">¡Tu Regalo Especial!</h3>
+
+          <!--
+            ✏️ FOTO DEL REGALO (OPCIONAL):
+               Guarda una imagen como fotos/regalo.jpg
+               Si no existe, este elemento se oculta automáticamente.
+          -->
+          <img
+            src="fotos/regalo.jpg"
+            alt="Tu regalo"
+            class="reveal-photo"
+            onerror="this.style.display='none'"
+          >
+
+          <!-- ✏️ EDITAR: Descripción del regalo -->
+          <p class="reveal-text">
+            ¡Aquí va la descripción de tu increíble regalo sorpresa!
+            Puedes escribir todo lo que quieras sobre él y hacer
+            esta revelación tan especial como mereces.
+          </p>
+
+          <div class="reveal-deco">✨ 💖 ✨</div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────── -->
+  <footer class="pixel-footer">
+    hecho con ♥ para el día más especial del año
+  </footer>
+
+  <!-- Canvas para el confeti (posición fixed, gestionado por JS) -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <script src="script.js"></script>
+</body>
+</html>
