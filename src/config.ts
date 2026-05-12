@@ -4,7 +4,13 @@
 
 export const CONFIG = {
   // ✏️ Nombre de tu novia (aparece en el título y en el hero)
-  nombre: '[NOMBRE]',
+  nombre: 'Luana',
+
+  // ─── Contraseña de administrador ────────────────────────────
+  // ✏️ Cambia esto por tu propia contraseña secreta.
+  //    NOTA: esta contraseña queda visible en el código del sitio.
+  //    Solo sirve para edición casual — no la uses para datos sensibles.
+  ownerPassword: '12345671',
 
   // ─── Carta de amor ──────────────────────────────────────────
   carta: {
@@ -26,19 +32,19 @@ export const CONFIG = {
       para mí cada día. ¡Feliz cumpleaños, amor!`,
     ],
     // ✏️ Tu nombre para la firma
-    firma: '[Tu nombre]',
+    firma: 'Gonzaa',
   },
 
   // ─── Galería de fotos ───────────────────────────────────────
   // ✏️ Guarda tus fotos en public/fotos/ y actualiza los nombres.
   //    Si una foto no existe, se muestra automáticamente un ícono.
   fotos: [
-    { src: '/fotos/foto1.jpg', caption: '✨ Momento especial ✨' },
-    { src: '/fotos/foto2.jpg', caption: '💕 Mi favorita' },
-    { src: '/fotos/foto3.jpg', caption: '🌟 Para siempre' },
-    { src: '/fotos/foto4.jpg', caption: '💖 Te quiero' },
-    { src: '/fotos/foto5.jpg', caption: '🎀 Nuestra historia' },
-    { src: '/fotos/foto6.jpg', caption: '💝 Siempre juntos' },
+    { src: '', caption: '✨ Momento especial ✨' },
+    { src: '', caption: '💕 Mi favorita' },
+    { src: '', caption: '🌟 Para siempre' },
+    { src: '', caption: '💖 Te quiero' },
+    { src: '', caption: '🎀 Nuestra historia' },
+    { src: '', caption: '💝 Siempre juntos' },
   ],
 
   // ─── Regalo sorpresa ────────────────────────────────────────
@@ -49,7 +55,7 @@ export const CONFIG = {
     // ✏️ Foto del regalo (opcional).
     //    Guarda la imagen en public/fotos/regalo.jpg.
     //    Pon null si no quieres mostrar foto.
-    fotoSrc: '/fotos/regalo.jpg' as string | null,
+    fotoSrc: null as string | null,
 
     // ✏️ Descripción del regalo
     texto: `¡Aquí va la descripción de tu increíble regalo sorpresa!

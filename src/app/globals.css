@@ -29,7 +29,7 @@ body {
   overflow-x: hidden;
 }
 
-/* ── SCANLINES (overlay retro) ──────────────────────────────── */
+/* ── SCANLINES ──────────────────────────────────────────────── */
 .scanlines {
   position: fixed;
   inset: 0;
@@ -42,7 +42,6 @@ body {
   z-index: 1;
 }
 
-/* Todo el contenido por encima del canvas de fondo */
 nav, header, main, footer { position: relative; z-index: 2; }
 
 /* ── NAVEGACIÓN ─────────────────────────────────────────────── */
@@ -71,30 +70,13 @@ nav, header, main, footer { position: relative; z-index: 2; }
   transition: transform .08s, box-shadow .08s;
   letter-spacing: 1px;
 }
+.nav-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--dpurple); }
+.nav-btn.active { background: var(--pink); border-color: var(--hot); color: #000; box-shadow: 4px 4px 0 #7b003a; }
 
-.nav-btn:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0 var(--dpurple);
-}
-
-.nav-btn.active {
-  background: var(--pink);
-  border-color: var(--hot);
-  color: #000;
-  box-shadow: 4px 4px 0 #7b003a;
-}
-
-.nav-divider {
-  font-size: 22px;
-  color: var(--pink);
-  animation: heartbeat 1.4s ease-in-out infinite;
-}
+.nav-divider { font-size: 22px; color: var(--pink); animation: heartbeat 1.4s ease-in-out infinite; }
 
 /* ── HERO ───────────────────────────────────────────────────── */
-.hero {
-  text-align: center;
-  padding: 56px 20px 36px;
-}
+.hero { text-align: center; padding: 56px 20px 36px; }
 
 .hero-heart {
   font-size: 76px;
@@ -124,25 +106,29 @@ nav, header, main, footer { position: relative; z-index: 2; }
   letter-spacing: 4px;
 }
 
-.hero-stars {
-  font-size: 14px;
-  color: var(--gold);
-  letter-spacing: 10px;
-  animation: twinkle 2s ease-in-out infinite;
-  margin-top: 8px;
+/* Input del nombre en modo edición */
+.hero-name-input {
+  display: block;
+  margin: 10px auto 0;
+  font-family: var(--font);
+  font-size: clamp(16px, 3.5vw, 28px);
+  color: var(--pink);
+  background: rgba(255, 110, 180, .1);
+  border: 3px dashed var(--pink);
+  text-align: center;
+  letter-spacing: 4px;
+  padding: 8px 16px;
+  outline: none;
+  width: min(420px, 90vw);
 }
+.hero-name-input:focus { background: rgba(255, 110, 180, .18); border-color: var(--gold); }
 
-/* ── CONTENEDOR PRINCIPAL ───────────────────────────────────── */
-main {
-  max-width: 880px;
-  margin: 0 auto;
-  padding: 0 20px 80px;
-}
+.hero-stars { font-size: 14px; color: var(--gold); letter-spacing: 10px; animation: twinkle 2s ease-in-out infinite; margin-top: 8px; }
 
-/* ── SECCIONES ──────────────────────────────────────────────── */
-.section {
-  animation: fadein .4s ease;
-}
+/* ── MAIN ───────────────────────────────────────────────────── */
+main { max-width: 880px; margin: 0 auto; padding: 0 20px 80px; }
+
+.section { animation: fadein .4s ease; }
 
 .section-heading {
   font-size: clamp(11px, 2.2vw, 16px);
@@ -167,51 +153,43 @@ main {
   padding: 40px 44px;
 }
 
-.letter-deco {
-  text-align: center;
-  color: var(--purple);
-  letter-spacing: 4px;
-  font-size: 11px;
-  margin: 0 0 22px;
-}
+/* Borde dorado en modo edición */
+.letter-box--edit { border-color: var(--gold); box-shadow: 7px 7px 0 rgba(255,215,0,.3); }
 
+.letter-deco { text-align: center; color: var(--purple); letter-spacing: 4px; font-size: 11px; margin: 0 0 22px; }
 .letter-deco.bottom { margin: 22px 0 0; }
 
-.letter-box p {
-  font-size: 10px;
-  line-height: 2.5;
-  color: var(--white);
-  margin-bottom: 14px;
-  white-space: pre-line;
-}
+.letter-box p { font-size: 10px; line-height: 2.5; color: var(--white); margin-bottom: 14px; white-space: pre-line; }
+.letter-open { font-size: 14px !important; color: var(--gold) !important; margin-bottom: 22px !important; }
+.letter-close { color: var(--purple) !important; text-align: right; margin-top: 24px !important; margin-bottom: 0 !important; line-height: 2.5 !important; }
+.letter-signature { color: var(--pink); font-size: 12px; }
 
-.letter-open {
-  font-size: 14px !important;
-  color: var(--gold) !important;
-  margin-bottom: 22px !important;
-}
+/* Wrapper de párrafo editable */
+.para-wrapper { margin-bottom: 12px; }
 
-.letter-close {
-  color: var(--purple) !important;
-  text-align: right;
-  margin-top: 24px !important;
-  margin-bottom: 0 !important;
-  line-height: 2.5 !important;
-}
+/* Input de firma inline */
+.firma-input { display: inline-block; width: auto; min-width: 160px; margin-top: 6px; }
 
-.letter-signature {
-  color: var(--pink);
-  font-size: 12px;
+/* Botón agregar párrafo */
+.add-para-btn {
+  display: block;
+  margin: 8px auto 16px;
+  background: transparent;
+  border: 2px dashed var(--purple);
+  color: var(--purple);
+  font-family: var(--font);
+  font-size: 8px;
+  padding: 8px 20px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: border-color .1s, color .1s;
 }
+.add-para-btn:hover { border-color: var(--pink); color: var(--pink); }
 
 /* ── GALERÍA DE FOTOS ───────────────────────────────────────── */
 .photos-heading { margin-top: 60px !important; }
 
-.photo-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 20px;
-}
+.photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
 
 .photo-frame {
   border: 3px solid var(--purple);
@@ -220,11 +198,7 @@ main {
   padding: 8px 8px 0;
   transition: transform .1s, box-shadow .1s;
 }
-
-.photo-frame:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: 8px 8px 0 var(--dpurple);
-}
+.photo-frame:hover { transform: translate(-3px, -3px); box-shadow: 8px 8px 0 var(--dpurple); }
 
 .photo-img-wrap {
   position: relative;
@@ -235,116 +209,112 @@ main {
 }
 
 .photo-placeholder {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 44px;
-  color: var(--dpurple);
-  background: var(--bg2);
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 44px; color: var(--dpurple); background: var(--bg2);
 }
 
 .photo-img-wrap img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  opacity: 0;            /* Empieza oculta; se muestra al cargar via onLoad */
+  transition: opacity .35s;
+}
+
+/* Botón de edición superpuesto en la foto */
+.foto-edit-btn {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: opacity .3s;
+  top: 6px; right: 6px;
+  background: rgba(13, 2, 33, .85);
+  border: 2px solid var(--purple);
+  color: var(--white);
+  font-size: 14px;
+  width: 30px; height: 30px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 10;
+  transition: border-color .1s;
+}
+.foto-edit-btn:hover { border-color: var(--pink); }
+
+/* Panel de edición de foto */
+.foto-edit-panel {
+  padding: 10px 8px 6px;
+  background: rgba(22, 8, 49, .95);
+  border-top: 2px dashed var(--purple);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.photo-caption {
-  font-size: 8px;
-  color: var(--pink);
+/* Caption inline en edit mode */
+.caption-inline {
+  font-size: 8px !important;
+  padding: 6px 4px !important;
   text-align: center;
-  padding: 8px 4px 6px;
-  line-height: 1.8;
+  border-color: var(--purple) !important;
+  margin: 4px 0 !important;
 }
 
-/* ── SECCIÓN REGALO ─────────────────────────────────────────── */
-.gift-hint {
-  text-align: center;
-  font-size: 9px;
-  color: var(--purple);
-  margin-bottom: 36px;
-  animation: pulse 2s ease-in-out infinite;
-}
+.photo-caption { font-size: 8px; color: var(--pink); text-align: center; padding: 8px 4px 6px; line-height: 1.8; }
 
-.gift-scene {
+/* Botón agregar foto */
+.add-foto-btn {
+  border: 3px dashed var(--purple);
+  background: transparent;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 44px;
-  padding-bottom: 20px;
+  justify-content: center;
+  gap: 8px;
+  aspect-ratio: 1 / 1;
+  color: var(--purple);
+  font-family: var(--font);
+  font-size: 9px;
+  min-height: 120px;
+  transition: border-color .1s, color .1s;
+  letter-spacing: 1px;
 }
+.add-foto-btn span:first-child { font-size: 32px; }
+.add-foto-btn:hover { border-color: var(--pink); color: var(--pink); }
 
-/* ── CAJA REGALO ────────────────────────────────────────────── */
-.gift-box {
-  width: 160px;
-  cursor: pointer;
-  user-select: none;
-  transition: transform .12s;
-}
+/* ── SECCIÓN REGALO ─────────────────────────────────────────── */
+.gift-hint { text-align: center; font-size: 9px; color: var(--purple); margin-bottom: 36px; animation: pulse 2s ease-in-out infinite; }
 
+.gift-scene { display: flex; flex-direction: column; align-items: center; gap: 44px; padding-bottom: 20px; }
+
+.gift-box { width: 160px; cursor: pointer; user-select: none; transition: transform .12s; }
 .gift-box:hover { transform: scale(1.05); }
 
 .gift-lid {
-  width: 160px;
-  height: 52px;
+  width: 160px; height: 52px;
   background: var(--hot);
   border: 3px solid #fff;
   box-shadow: 4px 4px 0 #7b003a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   font-size: 28px;
-  position: relative;
-  z-index: 2;
+  position: relative; z-index: 2;
   transform-origin: left top;
   transition: transform .55s cubic-bezier(.4, 0, .2, 1.3), opacity .35s .1s;
 }
 
 .gift-body {
-  width: 160px;
-  height: 130px;
+  width: 160px; height: 130px;
   background: var(--pink);
-  border: 3px solid #fff;
-  border-top: none;
+  border: 3px solid #fff; border-top: none;
   box-shadow: 4px 4px 0 #7b003a;
-  position: relative;
-  overflow: hidden;
+  position: relative; overflow: hidden;
 }
 
-.gift-ribbon-v {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 20px;
-  height: 100%;
-  background: var(--hot);
-}
+.gift-ribbon-v { position: absolute; left: 50%; transform: translateX(-50%); width: 20px; height: 100%; background: var(--hot); }
+.gift-ribbon-h { position: absolute; top: 38%; left: 0; width: 100%; height: 20px; background: var(--hot); }
 
-.gift-ribbon-h {
-  position: absolute;
-  top: 38%;
-  left: 0;
-  width: 100%;
-  height: 20px;
-  background: var(--hot);
-}
+.gift-box.opened .gift-lid { transform: rotate(-105deg) translate(-12px, -68px); opacity: 0; }
 
-/* La tapa "vuela" al abrirse */
-.gift-box.opened .gift-lid {
-  transform: rotate(-105deg) translate(-12px, -68px);
-  opacity: 0;
-}
-
-/* ── REVELACIÓN DEL REGALO ──────────────────────────────────── */
 .gift-reveal {
-  max-width: 580px;
-  width: 100%;
+  max-width: 580px; width: 100%;
   text-align: center;
   background: linear-gradient(135deg, #1a0a2e, #200d3a);
   border: 3px solid var(--gold);
@@ -352,53 +322,239 @@ main {
   padding: 40px 44px;
 }
 
-.reveal-icon {
-  font-size: 52px;
-  display: block;
-  margin-bottom: 16px;
-  animation: spin 4s linear infinite;
-  line-height: 1;
+.reveal-icon { font-size: 52px; display: block; margin-bottom: 16px; animation: spin 4s linear infinite; line-height: 1; }
+.reveal-title { font-size: clamp(12px, 2.5vw, 16px); color: var(--gold); text-shadow: 2px 2px 0 #7a5000; margin-bottom: 24px; }
+
+/* Input de título del regalo en edit mode */
+.reveal-title-input {
+  font-size: clamp(12px, 2.5vw, 14px) !important;
+  text-align: center;
+  color: var(--gold) !important;
+  border-color: var(--gold) !important;
+  background: rgba(255, 215, 0, .05) !important;
+  margin-bottom: 20px;
 }
 
-.reveal-title {
-  font-size: clamp(12px, 2.5vw, 16px);
-  color: var(--gold);
-  text-shadow: 2px 2px 0 #7a5000;
-  margin-bottom: 24px;
-}
+.reveal-foto-edit { width: 100%; margin-bottom: 16px; text-align: left; }
 
-.reveal-photo {
-  width: 100%;
-  max-width: 340px;
-  border: 3px solid var(--gold);
-  box-shadow: 4px 4px 0 rgba(255, 215, 0, .3);
-  margin: 0 auto 24px;
-  display: block;
-}
+.reveal-photo { width: 100%; max-width: 340px; border: 3px solid var(--gold); box-shadow: 4px 4px 0 rgba(255, 215, 0, .3); margin: 0 auto 24px; display: block; opacity: 0; transition: opacity .35s; }
 
-.reveal-text {
-  font-size: 10px;
-  line-height: 2.5;
+.reveal-text { font-size: 10px; line-height: 2.5; color: var(--white); margin-bottom: 24px; white-space: pre-line; }
+
+.reveal-text-input { text-align: left; color: var(--white) !important; }
+
+.reveal-deco { font-size: 20px; letter-spacing: 16px; animation: pulse 2s ease-in-out infinite; }
+
+/* ── INPUTS Y TEXTAREAS DE EDICIÓN ──────────────────────────── */
+.edit-input {
+  background: rgba(255, 110, 180, .07);
+  border: 2px dashed var(--pink);
   color: var(--white);
-  margin-bottom: 24px;
-  white-space: pre-line;
+  font-family: var(--font);
+  font-size: 10px;
+  line-height: 2;
+  padding: 8px 10px;
+  width: 100%;
+  outline: none;
+  margin-bottom: 4px;
 }
+.edit-input:focus { border-color: var(--gold); background: rgba(255, 215, 0, .06); border-style: solid; }
 
-.reveal-deco {
-  font-size: 20px;
-  letter-spacing: 16px;
-  animation: pulse 2s ease-in-out infinite;
+.edit-textarea {
+  background: rgba(255, 110, 180, .07);
+  border: 2px dashed var(--pink);
+  color: var(--white);
+  font-family: var(--font);
+  font-size: 10px;
+  line-height: 2.2;
+  padding: 10px;
+  width: 100%;
+  resize: vertical;
+  outline: none;
+  margin-bottom: 4px;
 }
+.edit-textarea:focus { border-color: var(--gold); border-style: solid; background: rgba(255, 215, 0, .04); }
+
+.edit-label { font-size: 7px; color: var(--purple); display: block; margin-bottom: 3px; letter-spacing: 1px; text-transform: uppercase; }
+
+/* Acciones de párrafo */
+.para-actions { display: flex; justify-content: flex-end; margin-bottom: 8px; }
+
+.para-btn {
+  background: transparent;
+  border: 2px solid var(--purple);
+  color: var(--purple);
+  font-family: var(--font);
+  font-size: 8px;
+  padding: 4px 10px;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+.para-btn.danger { border-color: var(--hot); color: var(--hot); }
+.para-btn.danger:hover { background: rgba(255, 20, 147, .15); }
 
 /* ── FOOTER ─────────────────────────────────────────────────── */
 .pixel-footer {
-  text-align: center;
-  font-size: 8px;
+  text-align: center; font-size: 8px; color: var(--dpurple);
+  padding: 24px 20px; border-top: 3px solid var(--dpurple);
+  position: relative; z-index: 2; letter-spacing: 1px;
+}
+
+/* ── BARRA DEL PROPIETARIO (fixed bottom-right) ─────────────── */
+.lock-btn {
+  position: fixed; bottom: 24px; right: 24px; z-index: 100;
+  background: var(--bg2);
+  border: 3px solid var(--dpurple);
   color: var(--dpurple);
-  padding: 24px 20px;
-  border-top: 3px solid var(--dpurple);
-  position: relative;
-  z-index: 2;
+  font-size: 16px; width: 44px; height: 44px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  box-shadow: 3px 3px 0 rgba(0,0,0,.5);
+  transition: border-color .1s, color .1s;
+  opacity: .6;
+}
+.lock-btn:hover { border-color: var(--purple); color: var(--purple); opacity: 1; }
+
+.owner-bar {
+  position: fixed; bottom: 24px; right: 24px; z-index: 100;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 8px;
+  max-width: min(360px, calc(100vw - 48px));
+}
+
+.owner-indicator {
+  display: block;
+  font-size: 8px; color: var(--gold);
+  background: rgba(255, 215, 0, .1);
+  border: 2px solid var(--gold);
+  padding: 6px 12px;
+  letter-spacing: 2px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.owner-controls {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+  background: var(--bg2);
+  border: 3px solid var(--pink);
+  box-shadow: 5px 5px 0 #7b003a;
+  padding: 12px;
+}
+
+.owner-bar-btn {
+  background: var(--bg);
+  border: 3px solid var(--pink);
+  color: var(--pink);
+  font-family: var(--font);
+  font-size: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 #7b003a;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  transition: transform .08s, box-shadow .08s;
+}
+.owner-bar-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 #7b003a; }
+.owner-bar-btn.gold { border-color: var(--gold); color: var(--gold); box-shadow: 3px 3px 0 #7a5000; }
+.owner-bar-btn.gold:hover { box-shadow: 5px 5px 0 #7a5000; }
+
+/* Panel del link generado */
+.share-panel {
+  background: var(--bg2);
+  border: 3px solid var(--gold);
+  box-shadow: 5px 5px 0 rgba(255,215,0,.2);
+  padding: 14px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+
+.share-panel-label { font-size: 8px; color: var(--gold); letter-spacing: 1px; }
+
+.share-url-box {
+  background: var(--bg);
+  border: 2px solid rgba(255,215,0,.4);
+  padding: 10px;
+  font-size: 7px;
+  color: rgba(255, 215, 0, .8);
+  word-break: break-all;
+  line-height: 1.8;
+  max-height: 100px;
+  overflow-y: auto;
+  user-select: all;
+  cursor: text;
+}
+
+.share-note { font-size: 7px; color: var(--purple); line-height: 1.6; opacity: .8; }
+
+/* ── MODAL DE LOGIN ──────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(13, 2, 33, .88);
+  z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+
+.modal-box {
+  background: var(--bg2);
+  border: 3px solid var(--pink);
+  box-shadow: 8px 8px 0 var(--dpurple);
+  padding: 40px 36px;
+  max-width: 340px; width: 100%;
+  text-align: center;
+}
+
+.modal-title { font-size: 13px; color: var(--pink); margin-bottom: 12px; }
+.modal-subtitle { font-size: 8px; color: var(--purple); margin-bottom: 24px; line-height: 1.8; }
+
+.modal-input {
+  background: var(--bg);
+  border: 3px solid var(--purple);
+  color: var(--white);
+  font-family: var(--font);
+  font-size: 12px;
+  padding: 12px;
+  width: 100%; outline: none;
+  margin-bottom: 14px;
+  letter-spacing: 4px;
+  text-align: center;
+}
+.modal-input:focus { border-color: var(--pink); }
+
+.modal-error { color: var(--hot); font-size: 8px; margin-bottom: 12px; animation: shake .35s ease; }
+
+.modal-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+
+.modal-btn {
+  background: var(--pink); border: 3px solid var(--hot); color: #000;
+  font-family: var(--font); font-size: 9px; padding: 10px 22px;
+  cursor: pointer; box-shadow: 4px 4px 0 #7b003a;
+  letter-spacing: 1px;
+}
+
+.modal-cancel {
+  background: transparent; border: 3px solid var(--purple); color: var(--purple);
+  font-family: var(--font); font-size: 9px; padding: 10px 22px; cursor: pointer;
+  letter-spacing: 1px;
+}
+
+/* ── SUBIDA DE ARCHIVOS ─────────────────────────────────────── */
+.file-upload-btn {
+  background: var(--bg2);
+  border: 3px solid var(--purple);
+  color: var(--purple);
+  font-family: var(--font);
+  font-size: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  width: 100%;
+  letter-spacing: 1px;
+  transition: border-color .1s, color .1s;
+  box-shadow: 3px 3px 0 var(--dpurple);
+}
+.file-upload-btn:hover:not(:disabled) { border-color: var(--pink); color: var(--pink); }
+.file-upload-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.upload-ok {
+  font-size: 8px;
+  color: #4ade80;
+  margin-top: 4px;
   letter-spacing: 1px;
 }
 
@@ -409,34 +565,21 @@ main {
   28%       { transform: scale(1); }
   42%       { transform: scale(1.15); }
 }
-
-@keyframes twinkle {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: .3; }
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: .5; }
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes fadein {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+@keyframes twinkle { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
+@keyframes pulse   { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+@keyframes spin    { to { transform: rotate(360deg); } }
+@keyframes fadein  { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes shake   { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
 
 /* ── RESPONSIVE ─────────────────────────────────────────────── */
 @media (max-width: 640px) {
-  .letter-box    { padding: 24px 18px; }
-  .reveal-title  { font-size: 11px; }
-  .gift-reveal   { padding: 28px 20px; }
-  .photo-grid    { grid-template-columns: 1fr 1fr; gap: 12px; }
-  .nav-btn       { font-size: 8px; padding: 8px 12px; }
-  .hero          { padding: 40px 16px 28px; }
+  .letter-box { padding: 24px 18px; }
+  .reveal-title { font-size: 11px; }
+  .gift-reveal  { padding: 28px 20px; }
+  .photo-grid   { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .nav-btn      { font-size: 8px; padding: 8px 12px; }
+  .hero         { padding: 40px 16px 28px; }
+  .owner-bar    { bottom: 16px; right: 16px; }
 }
 
 @media (max-width: 400px) {

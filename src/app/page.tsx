@@ -1,11 +1,14 @@
 'use client'
 
 import { useState } from 'react'
+import { AppProvider } from '@/context/AppContext'
 import StarBackground from '@/components/StarBackground'
 import Nav from '@/components/Nav'
 import Hero from '@/components/Hero'
 import CartaSection from '@/components/CartaSection'
 import GiftBox from '@/components/GiftBox'
+import LoginModal from '@/components/LoginModal'
+import OwnerBar from '@/components/OwnerBar'
 
 type ActiveSection = 'carta' | 'regalo'
 
@@ -20,7 +23,8 @@ export default function Home() {
   }
 
   return (
-    <>
+    // AppProvider envuelve todo — Hero, CartaSection, GiftBox, etc. usan useApp()
+    <AppProvider>
       <StarBackground />
       <div className="scanlines" />
       <Nav activeSection={activeSection} onSwitch={switchSection} />
@@ -37,6 +41,10 @@ export default function Home() {
       <footer className="pixel-footer">
         hecho con ♥ para el día más especial del año
       </footer>
-    </>
+
+      {/* Componentes de admin — visibles desde cualquier sección */}
+      <LoginModal />
+      <OwnerBar />
+    </AppProvider>
   )
 }

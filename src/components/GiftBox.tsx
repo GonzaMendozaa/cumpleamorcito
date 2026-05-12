@@ -1,7 +1,29 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { CONFIG } from '@/config'
+import { useApp } from '@/context/AppContext'
+
+function compressImage(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onerror = reject
+    reader.onload = e => {
+      const img = new Image()
+      img.onerror = reject
+      img.onload = () => {
+        const MAX = 640
+        const scale   = Math.min(1, MAX / Math.max(img.width, img.height))
+        const canvas  = document.createElement('canvas')
+        canvas.width  = Math.round(img.width  * scale)
+        canvas.height = Math.round(img.height * scale)
+        canvas.getContext('2d')!.drawImage(img, 0, 0, canvas.width, canvas.height)
+        resolve(canvas.toDataURL('image/jpeg', 0.72))
+      }
+      img.src = e.target?.result as string
+    }
+    reader.readAsDataURL(file)
+  })
+}
 
 interface Props {
   opened: boolean
@@ -9,10 +31,28 @@ interface Props {
 }
 
 export default function GiftBox({ opened, onOpen }: Props) {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const giftRef   = useRef<HTMLDivElement>(null)
-  const [showReveal, setShowReveal]   = useState(false)
-  const [animReveal, setAnimReveal]   = useState(false)
+  const { content, isOwner, setContent } = useApp()
+  const canvasRef      = useRef<HTMLCanvasElement>(null)
+  const giftRef        = useRef<HTMLDivElement>(null)
+  const regaloFileRef  = useRef<HTMLInputElement>(null)
+  const [showReveal,   setShowReveal]   = useState(false)
+  const [animReveal,   setAnimReveal]   = useState(false)
+  const [uploadingImg, setUploadingImg] = useState(false)
+
+  async function handleRegaloFile(file: File) {
+    setUploadingImg(true)
+    try {
+      const base64 = await compressImage(file)
+      setContent(p => ({ ...p, regalo: { ...p.regalo, fotoSrc: base64 } }))
+    } catch {
+      alert('No se pudo procesar la imagen.')
+    } finally {
+      setUploadingImg(false)
+    }
+  }
+
+  // En modo owner, siempre mostrar el contenido sin necesidad de clic
+  const effectivelyOpened = isOwner || opened
 
   const spawnConfetti = useCallback(() => {
     const canvas = canvasRef.current
@@ -24,15 +64,14 @@ export default function GiftBox({ opened, onOpen }: Props) {
     canvas.width  = window.innerWidth
     canvas.height = window.innerHeight
 
-    const colors    = ['#ff6eb4', '#c77dff', '#ffd700', '#00ffff', '#ff1493', '#ffffff']
-    const rect      = giftRef.current?.getBoundingClientRect()
-    const cx        = rect ? rect.left + rect.width  / 2 : window.innerWidth  / 2
-    const cy        = rect ? rect.top  + rect.height / 2 : window.innerHeight / 2
+    const colors = ['#ff6eb4', '#c77dff', '#ffd700', '#00ffff', '#ff1493', '#ffffff']
+    const rect   = giftRef.current?.getBoundingClientRect()
+    const cx     = rect ? rect.left + rect.width  / 2 : window.innerWidth  / 2
+    const cy     = rect ? rect.top  + rect.height / 2 : window.innerHeight / 2
 
     const particles: Array<{
       x: number; y: number; vx: number; vy: number
-      size: number; color: string; alpha: number
-      rot: number; rspeed: number
+      size: number; color: string; alpha: number; rot: number; rspeed: number
     }> = []
 
     for (let i = 0; i < 150; i++) {
@@ -44,25 +83,18 @@ export default function GiftBox({ opened, onOpen }: Props) {
         vy: Math.sin(angle) * speed - 6,
         size:   4 + Math.floor(Math.random() * 3) * 4,
         color:  colors[Math.floor(Math.random() * colors.length)],
-        alpha:  1,
-        rot:    Math.random() * 360,
+        alpha:  1, rot: Math.random() * 360,
         rspeed: (Math.random() - 0.5) * 10,
       })
     }
 
     function loop() {
       ctx!.clearRect(0, 0, canvas!.width, canvas!.height)
-
       for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i]
-        p.x += p.vx
-        p.y += p.vy
-        p.vy    += 0.38
-        p.rot   += p.rspeed
-        p.alpha -= 0.013
-
+        p.x += p.vx; p.y += p.vy; p.vy += 0.38
+        p.rot += p.rspeed; p.alpha -= 0.013
         if (p.alpha <= 0.02) { particles.splice(i, 1); continue }
-
         ctx!.save()
         ctx!.globalAlpha = Math.max(0, p.alpha)
         ctx!.translate(p.x, p.y)
@@ -71,17 +103,13 @@ export default function GiftBox({ opened, onOpen }: Props) {
         ctx!.fillRect(-p.size / 2, -p.size / 2, p.size, p.size)
         ctx!.restore()
       }
-
-      if (particles.length > 0) {
-        requestAnimationFrame(loop)
-      } else {
-        canvas!.style.display = 'none'
-      }
+      if (particles.length > 0) requestAnimationFrame(loop)
+      else canvas!.style.display = 'none'
     }
-
     requestAnimationFrame(loop)
   }, [])
 
+  // Mostrar reveal cuando se abre (por clic real, no owner mode)
   useEffect(() => {
     if (!opened) return
     const t1 = setTimeout(() => setShowReveal(true),  650)
@@ -90,31 +118,43 @@ export default function GiftBox({ opened, onOpen }: Props) {
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3) }
   }, [opened, spawnConfetti])
 
+  // En owner mode, mostrar reveal inmediatamente
+  useEffect(() => {
+    if (isOwner) { setShowReveal(true); setAnimReveal(true) }
+  }, [isOwner])
+
+  const revealVisible = showReveal || isOwner
+
   return (
     <section className="section">
 
       <div className="section-heading">🎁 TU REGALO SORPRESA</div>
-      <p className="gift-hint">¡Haz clic en la caja para descubrir tu regalo!</p>
+
+      {!effectivelyOpened && (
+        <p className="gift-hint">¡Haz clic en la caja para descubrir tu regalo!</p>
+      )}
 
       <div className="gift-scene">
 
-        {/* Caja animada */}
-        <div
-          ref={giftRef}
-          className={`gift-box${opened ? ' opened' : ''}`}
-          onClick={() => { if (!opened) onOpen() }}
-        >
-          <div className="gift-lid">
-            <span className="gift-bow">🎀</span>
+        {/* Caja animada — oculta en owner mode para ir directo al contenido */}
+        {!isOwner && (
+          <div
+            ref={giftRef}
+            className={`gift-box${effectivelyOpened ? ' opened' : ''}`}
+            onClick={() => { if (!effectivelyOpened) onOpen() }}
+          >
+            <div className="gift-lid">
+              <span className="gift-bow">🎀</span>
+            </div>
+            <div className="gift-body">
+              <div className="gift-ribbon-v" />
+              <div className="gift-ribbon-h" />
+            </div>
           </div>
-          <div className="gift-body">
-            <div className="gift-ribbon-v" />
-            <div className="gift-ribbon-h" />
-          </div>
-        </div>
+        )}
 
-        {/* Revelación (aparece con transición suave tras abrir) */}
-        {showReveal && (
+        {/* Revelación del regalo */}
+        {revealVisible && (
           <div
             className="gift-reveal"
             style={{
@@ -124,36 +164,110 @@ export default function GiftBox({ opened, onOpen }: Props) {
             }}
           >
             <div className="reveal-icon">🌟</div>
-            <h3 className="reveal-title">{CONFIG.regalo.titulo}</h3>
 
-            {CONFIG.regalo.fotoSrc && (
-              <img
-                src={CONFIG.regalo.fotoSrc}
-                alt="Tu regalo"
-                className="reveal-photo"
-                onError={(e) => {
-                  ;(e.target as HTMLImageElement).style.display = 'none'
-                }}
+            {isOwner ? (
+              <input
+                className="edit-input reveal-title-input"
+                value={content.regalo.titulo}
+                onChange={e =>
+                  setContent(p => ({ ...p, regalo: { ...p.regalo, titulo: e.target.value } }))
+                }
+                placeholder="Título del regalo"
               />
+            ) : (
+              <h3 className="reveal-title">{content.regalo.titulo}</h3>
             )}
 
-            <p className="reveal-text">{CONFIG.regalo.texto}</p>
+            {/* Foto del regalo */}
+            {isOwner ? (
+              <div className="reveal-foto-edit">
+                {/* Input de archivo oculto */}
+                <input
+                  type="file"
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                  ref={regaloFileRef}
+                  onChange={e => {
+                    const file = e.target.files?.[0]
+                    if (file) handleRegaloFile(file)
+                    e.target.value = ''
+                  }}
+                />
+
+                <label className="edit-label">📁 FOTO DEL REGALO (OPCIONAL)</label>
+                <button
+                  className="file-upload-btn"
+                  onClick={() => regaloFileRef.current?.click()}
+                  disabled={uploadingImg}
+                >
+                  {uploadingImg ? '⏳ PROCESANDO...' : '📷 SUBIR FOTO DEL REGALO'}
+                </button>
+
+                {content.regalo.fotoSrc?.startsWith('data:') && (
+                  <p className="upload-ok">✓ Foto local cargada</p>
+                )}
+
+                <label className="edit-label" style={{ marginTop: 8 }}>
+                  🔗 O PEGAR URL
+                </label>
+                <input
+                  className="edit-input"
+                  value={content.regalo.fotoSrc?.startsWith('data:') ? '' : (content.regalo.fotoSrc ?? '')}
+                  onChange={e =>
+                    setContent(p => ({
+                      ...p,
+                      regalo: { ...p.regalo, fotoSrc: e.target.value || null },
+                    }))
+                  }
+                  placeholder="/fotos/regalo.jpg  o  https://..."
+                />
+
+                {content.regalo.fotoSrc && (
+                  <img
+                    src={content.regalo.fotoSrc}
+                    alt="Regalo"
+                    className="reveal-photo"
+                    onLoad={e => { (e.target as HTMLImageElement).style.opacity = '1' }}
+                    onError={e => { (e.target as HTMLImageElement).style.opacity = '0' }}
+                  />
+                )}
+              </div>
+            ) : (
+              content.regalo.fotoSrc && (
+                <img
+                  src={content.regalo.fotoSrc}
+                  alt="Tu regalo"
+                  className="reveal-photo"
+                  onLoad={e => { (e.target as HTMLImageElement).style.opacity = '1' }}
+                  onError={e => { (e.target as HTMLImageElement).style.opacity = '0' }}
+                />
+              )
+            )}
+
+            {/* Texto del regalo */}
+            {isOwner ? (
+              <textarea
+                className="edit-textarea reveal-text-input"
+                value={content.regalo.texto}
+                onChange={e =>
+                  setContent(p => ({ ...p, regalo: { ...p.regalo, texto: e.target.value } }))
+                }
+                rows={5}
+                placeholder="Descripción del regalo..."
+              />
+            ) : (
+              <p className="reveal-text">{content.regalo.texto}</p>
+            )}
+
             <div className="reveal-deco">✨ 💖 ✨</div>
           </div>
         )}
 
       </div>
 
-      {/* Canvas del confeti (posición fixed, gestionado por JS) */}
       <canvas
         ref={canvasRef}
-        style={{
-          position: 'fixed',
-          inset: 0,
-          pointerEvents: 'none',
-          zIndex: 999,
-          display: 'none',
-        }}
+        style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 999, display: 'none' }}
       />
 
     </section>

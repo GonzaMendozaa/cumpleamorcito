@@ -1,77 +1,84 @@
-# 💖 Cumpleamorcito — App de Cumpleaños Pixel Art (Next.js)
+# 💖 Cumpleamorcito — App de Cumpleaños Pixel Art
 
-## ✏️ Cómo personalizar (solo un archivo)
+## ⚠️ Primer paso — Instalar Node.js
 
-Abre **[src/config.ts](src/config.ts)** — es el único archivo que necesitas editar:
+Los errores de TypeScript en el IDE desaparecen solos después de instalar Node.js y correr `npm install`.
 
-| Campo | Qué es |
-|---|---|
-| `nombre` | Nombre de tu novia (aparece en el título y el hero) |
-| `carta.parrafos` | Párrafos de tu carta de amor |
-| `carta.firma` | Tu nombre para la firma |
-| `fotos` | Array de fotos con captions |
-| `regalo.titulo` | Título del regalo sorpresa |
-| `regalo.fotoSrc` | Foto del regalo (o `null` si no tienes) |
-| `regalo.texto` | Descripción del regalo |
-
-### Agregar fotos
-Guarda tus fotos en `public/fotos/` con los nombres que pusiste en el config:
-```
-public/fotos/foto1.jpg
-public/fotos/foto2.jpg
-...
-public/fotos/regalo.jpg   ← opcional
-```
-Si una foto no existe, el marco muestra automáticamente un ícono de cámara.
-
----
-
-## 🛠️ Desarrollo local
+1. Descargá Node.js desde **[nodejs.org](https://nodejs.org)** (versión LTS)
+2. Instalá normalmente (el instalador agrega Node al PATH)
+3. Abrí una **nueva terminal** en la carpeta del proyecto y corré:
 
 ```bash
 npm install
 npm run dev
 ```
-La app queda en http://localhost:3000
+
+La app queda en http://localhost:3000 — los errores del IDE desaparecen.
+
+---
+
+## ✏️ Personalización
+
+### Opción A — Editar código (permanente)
+Abrí **[src/config.ts](src/config.ts)** y cambiá:
+- `nombre` — nombre de tu novia
+- `ownerPassword` — tu contraseña de administrador
+- `carta.parrafos` — párrafos de la carta
+- `fotos` — fotos y captions
+- `regalo` — descripción del regalo
+
+### Opción B — Editar desde la app (sin tocar código)
+1. Abrí la app deployada en Netlify
+2. Hacé clic en el 🔒 en la esquina inferior derecha
+3. Ingresá la contraseña que pusiste en `ownerPassword`
+4. Editá todo desde la interfaz:
+   - Nombre en el hero
+   - Párrafos de la carta (agregar, editar, eliminar)
+   - Fotos (URL y captions, agregar o quitar)
+   - Título, foto y descripción del regalo
+5. Clic en **🔗 GENERAR LINK** → copiá la URL generada
+6. Compartí ESA URL con tu novia — tiene todo el contenido personalizado incrustado
+
+> **Cómo funciona el link:** el contenido editado se codifica en el `#hash` de la URL. Quien abra ese link ve exactamente lo que configuraste, sin necesidad de redeployear.
 
 ---
 
 ## 🚀 Deploy en Netlify
 
-### Opción A — Conectar repositorio GitHub (recomendado)
-1. Sube el proyecto a GitHub
-2. Ve a [app.netlify.com](https://app.netlify.com) → **Add new site → Import an existing project**
-3. Conecta el repositorio
-4. Netlify detecta el `netlify.toml` automáticamente — no necesitas configurar nada
-5. Clic en **Deploy site** ✓
+### Opción A — Conectar repo GitHub (recomendado)
+1. Subí el proyecto a GitHub
+2. En [app.netlify.com](https://app.netlify.com) → **Add new site → Import an existing project**
+3. Conectá el repo — Netlify detecta el `netlify.toml` automáticamente
+4. Clic en **Deploy site** ✓
 
 ### Opción B — Deploy manual
 ```bash
-npm run build        # genera la carpeta out/
+npm run build   # genera la carpeta out/
 ```
-Luego arrastra la carpeta `out/` al área de deploy de Netlify.
+Arrastrá la carpeta `out/` al área de deploy de Netlify.
 
 ---
 
 ## 📁 Estructura del proyecto
-```
-cumpleamorcito/
-├── src/
-│   ├── config.ts              ← ✏️ EDITA AQUÍ
-│   ├── app/
-│   │   ├── layout.tsx         ← Font + metadata
-│   │   ├── page.tsx           ← Página principal
-│   │   └── globals.css        ← Estilos pixel art
-│   └── components/
-│       ├── StarBackground.tsx ← Canvas de estrellas
-│       ├── Nav.tsx            ← Navegación
-│       ├── Hero.tsx           ← Título + corazón animado
-│       ├── CartaSection.tsx   ← Carta + galería de fotos
-│       └── GiftBox.tsx        ← Caja regalo + confeti
-├── public/
-│   └── fotos/                 ← 📷 Pon tus fotos aquí
-├── next.config.js
-└── netlify.toml
-```
 
-> **Nota:** Los archivos `index.html`, `style.css` y `script.js` en la raíz son de la versión anterior y pueden eliminarse — no afectan el deploy.
+```
+src/
+├── config.ts                  ← ✏️ Personalización en código
+├── types.ts                   ← Tipos TypeScript
+├── context/
+│   └── AppContext.tsx          ← Estado global (contenido + auth)
+├── app/
+│   ├── layout.tsx
+│   ├── page.tsx               ← Página principal + AppProvider
+│   └── globals.css            ← Estilos pixel art + edición
+└── components/
+    ├── StarBackground.tsx     ← Canvas de fondo animado
+    ├── Nav.tsx                ← Navegación
+    ├── Hero.tsx               ← Título (editable en owner mode)
+    ├── CartaSection.tsx       ← Carta + fotos (editable)
+    ├── GiftBox.tsx            ← Regalo sorpresa (editable)
+    ├── LoginModal.tsx         ← Modal de contraseña
+    └── OwnerBar.tsx           ← Barra de herramientas del propietario
+public/
+└── fotos/                     ← 📷 Pon tus fotos aquí
+```
