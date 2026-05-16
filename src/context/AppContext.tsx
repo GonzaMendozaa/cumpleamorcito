@@ -14,10 +14,11 @@ import type { AppContent } from '@/types'
 import { supabase } from '@/lib/supabase'
 
 const defaultContent: AppContent = {
-  nombre: CONFIG.nombre,
-  carta:  { parrafos: CONFIG.carta.parrafos, firma: CONFIG.carta.firma },
-  fotos:  CONFIG.fotos,
-  regalo: CONFIG.regalo,
+  nombre:    CONFIG.nombre,
+  carta:     { parrafos: CONFIG.carta.parrafos, firma: CONFIG.carta.firma },
+  fotos:     CONFIG.fotos,
+  regalo:    CONFIG.regalo,
+  canciones: CONFIG.canciones,
 }
 
 interface AppContextType {

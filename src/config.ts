@@ -42,9 +42,14 @@ export const CONFIG = {
     { src: '', caption: '✨ Momento especial ✨' },
     { src: '', caption: '💕 Mi favorita' },
     { src: '', caption: '🌟 Para siempre' },
-    { src: '', caption: '💖 Te quiero' },
+    { src: '', caption: '💖 Primer Baile Juntos' },
     { src: '', caption: '🎀 Nuestra historia' },
     { src: '', caption: '💝 Siempre juntos' },
+  ],
+
+  // ─── Mixtape de canciones ───────────────────────────────────
+  canciones: [
+    { titulo: 'Nuestra canción', artista: '', url: '' },
   ],
 
   // ─── Regalo sorpresa ────────────────────────────────────────

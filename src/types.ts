@@ -1,3 +1,9 @@
+export interface Cancion {
+  titulo: string
+  artista: string
+  url: string
+}
+
 export interface AppContent {
   nombre: string
   carta: {
@@ -10,4 +16,5 @@ export interface AppContent {
     fotoSrc: string | null
     texto: string
   }
+  canciones: Cancion[]   // puede ser undefined en datos viejos — usar ?? []
 }
