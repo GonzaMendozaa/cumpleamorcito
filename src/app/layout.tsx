@@ -12,7 +12,7 @@ const pixelFont = Press_Start_2P({
 
 export const metadata: Metadata = {
   title: `💖 Feliz Cumpleaños, ${CONFIG.nombre}! 💖`,
-  description: 'Una sorpresa especial para ti',
+  description: 'Te hice una sorpresa especial para celebrar tu día. ¡Espero que lo disfrutes! 🥳🎉🥳',
 }
 
 export default function RootLayout({

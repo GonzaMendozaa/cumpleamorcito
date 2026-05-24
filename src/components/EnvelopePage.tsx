@@ -98,7 +98,7 @@ export default function EnvelopePage({ onAbrir, onSeguir }: Props) {
         </div>
       </div>
 
-      <p className="env-hint">✨ Tienes un mensaje muy especial... ✨</p>
+      <p className="env-hint">✨ Tenes un mensaje muy especial... ✨</p>
 
       <div className="env-btns">
         <button
@@ -128,7 +128,7 @@ export default function EnvelopePage({ onAbrir, onSeguir }: Props) {
                 className="env-btn env-btn--open"
                 onClick={() => setShowConfirm(false)}
               >
-                Mejor la abro 💌
+                Lo voy a abrir 💌
               </button>
               <button
                 className="env-btn env-btn--skip"
