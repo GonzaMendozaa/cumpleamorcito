@@ -64,7 +64,7 @@ export default function GiftBox({ opened, onOpen }: Props) {
     canvas.width  = window.innerWidth
     canvas.height = window.innerHeight
 
-    const colors = ['#ff6eb4', '#c77dff', '#ffd700', '#00ffff', '#ff1493', '#ffffff']
+    const colors = ['#ff3355', '#ff9f6b', '#ffd700', '#00ffff', '#cc0033', '#ffffff']
     const rect   = giftRef.current?.getBoundingClientRect()
     const cx     = rect ? rect.left + rect.width  / 2 : window.innerWidth  / 2
     const cy     = rect ? rect.top  + rect.height / 2 : window.innerHeight / 2

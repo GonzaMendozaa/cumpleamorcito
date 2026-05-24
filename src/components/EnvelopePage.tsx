@@ -31,6 +31,7 @@ interface Props {
 export default function EnvelopePage({ onAbrir, onSeguir }: Props) {
   const { content } = useApp()
   const [opening, setOpening] = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false)
   const { days, hours, minutes, seconds } = useTimeTogether()
 
   function handleAbrir() {
@@ -109,12 +110,36 @@ export default function EnvelopePage({ onAbrir, onSeguir }: Props) {
         </button>
         <button
           className="env-btn env-btn--skip"
-          onClick={onSeguir}
+          onClick={() => setShowConfirm(true)}
           disabled={opening}
         >
           SEGUIR ▶
         </button>
       </div>
+
+      {showConfirm && (
+        <div className="modal-overlay" onClick={() => setShowConfirm(false)}>
+          <div className="modal-box confirm-modal" onClick={e => e.stopPropagation()}>
+            <p className="confirm-text">
+              ¿Segura que querés perderte mi cartita que te escribí para vos? 😢
+            </p>
+            <div className="confirm-btns">
+              <button
+                className="env-btn env-btn--open"
+                onClick={() => setShowConfirm(false)}
+              >
+                Mejor la abro 💌
+              </button>
+              <button
+                className="env-btn env-btn--skip"
+                onClick={() => { setShowConfirm(false); onSeguir() }}
+              >
+                Seguir igual ▶
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

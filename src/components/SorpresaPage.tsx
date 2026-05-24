@@ -118,7 +118,7 @@ export default function SorpresaPage({ onBack, onNext }: Props) {
     canvas.width  = window.innerWidth
     canvas.height = window.innerHeight
 
-    const colors = ['#ff6eb4', '#c77dff', '#ffd700', '#00ffff', '#ff1493', '#ffffff']
+    const colors = ['#ff3355', '#ff9f6b', '#ffd700', '#00ffff', '#cc0033', '#ffffff']
     const rect   = giftRef.current?.getBoundingClientRect()
     const cx     = rect ? rect.left + rect.width  / 2 : window.innerWidth  / 2
     const cy     = rect ? rect.top  + rect.height / 2 : window.innerHeight / 2
@@ -318,11 +318,11 @@ export default function SorpresaPage({ onBack, onNext }: Props) {
 
             <div className="extras-col">
               <div className="flowers-row">
-                <PixelFlower color="#ff6eb4" />
-                <PixelFlower color="#ff1493" stemColor="#1a5c00" />
-                <PixelFlower color="#c77dff" stemColor="#2d7a00" />
+                <PixelFlower color="#ff3355" />
+                <PixelFlower color="#cc0033" stemColor="#1a5c00" />
+                <PixelFlower color="#ff9f6b" stemColor="#2d7a00" />
                 <PixelFlower color="#ffd700" stemColor="#1a5c00" />
-                <PixelFlower color="#ff6eb4" stemColor="#2d7a00" />
+                <PixelFlower color="#ff3355" stemColor="#2d7a00" />
               </div>
               <p className="extras-caption">
                 Flores para la persona<br />más hermosa del mundo 🌸
