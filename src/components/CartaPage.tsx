@@ -1,5 +1,6 @@
 'use client'
 
+import { useRef, useState } from 'react'
 import { useApp } from '@/context/AppContext'
 
 interface Props {
@@ -9,6 +10,57 @@ interface Props {
 
 export default function CartaPage({ onNext, onBack }: Props) {
   const { content, isOwner, setContent } = useApp()
+  const letterRef = useRef<HTMLDivElement>(null)
+  const [downloading, setDownloading] = useState(false)
+
+  async function handleDownload() {
+    if (!letterRef.current) return
+    setDownloading(true)
+    try {
+      const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
+        import('html2canvas'),
+        import('jspdf'),
+      ])
+
+      const canvas = await html2canvas(letterRef.current, {
+        backgroundColor: '#1a0a2e',
+        scale: 2,
+        useCORS: true,
+        logging: false,
+      })
+
+      // A4 en mm: 210 x 297
+      const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
+      const pageW = 210
+      const pageH = 297
+      const margin = 16
+
+      const maxW = pageW - margin * 2
+      const maxH = pageH - margin * 2
+      const imgRatio = canvas.height / canvas.width
+
+      // Escalar para que quepa completa respetando ambas dimensiones
+      let imgW = maxW
+      let imgH = imgRatio * imgW
+      if (imgH > maxH) {
+        imgH = maxH
+        imgW = imgH / imgRatio
+      }
+
+      // Centrar en la hoja
+      const offsetX = (pageW - imgW) / 2
+      const offsetY = (pageH - imgH) / 2
+
+      // Fondo oscuro de toda la hoja
+      pdf.setFillColor(13, 1, 24)
+      pdf.rect(0, 0, pageW, pageH, 'F')
+
+      pdf.addImage(canvas.toDataURL('image/png'), 'PNG', offsetX, offsetY, imgW, imgH)
+      pdf.save('carta.pdf')
+    } finally {
+      setDownloading(false)
+    }
+  }
 
   function setParrafo(i: number, value: string) {
     setContent(p => {
@@ -39,9 +91,9 @@ export default function CartaPage({ onNext, onBack }: Props) {
   return (
     <div className="carta-page">
       <button className="page-back-btn" onClick={onBack}>◀ VOLVER</button>
-      <div className="page-badge">💌 MI CARTA PARA TI</div>
+      <div className="page-badge">💌 MI CARTA PARA VOS</div>
 
-      <div className={`letter-box${isOwner ? ' letter-box--edit' : ''}`}>
+      <div ref={letterRef} className={`letter-box${isOwner ? ' letter-box--edit' : ''}`}>
         <div className="letter-deco">♥ · ♥ · ♥ · ♥ · ♥</div>
 
         <p className="letter-open">Mi amor,</p>
@@ -92,6 +144,12 @@ export default function CartaPage({ onNext, onBack }: Props) {
 
         <div className="letter-deco bottom">♥ · ♥ · ♥ · ♥ · ♥</div>
       </div>
+
+      {!isOwner && (
+        <button className="print-btn" onClick={handleDownload} disabled={downloading}>
+          {downloading ? 'DESCARGANDO...' : '⬇ DESCARGAR CARTA'}
+        </button>
+      )}
 
       <button className="page-next-btn" onClick={onNext}>
         📸 VER NUESTROS MOMENTOS ▶

@@ -1640,3 +1640,26 @@ nav, header, main, footer { position: relative; z-index: 2; }
   .menu-card     { padding: 20px 8px 16px; }
   .menu-card-icon { font-size: 28px; }
 }
+
+/* ── PRINT BUTTON ────────────────────────────────────────────── */
+.print-btn {
+  display: block;
+  margin: 16px auto 0;
+  background: transparent;
+  border: 2px solid var(--purple);
+  color: var(--purple);
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  letter-spacing: 2px;
+  padding: 10px 22px;
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+.print-btn:hover:not(:disabled) {
+  border-color: var(--pink);
+  color: var(--pink);
+}
+.print-btn:disabled {
+  opacity: .5;
+  cursor: default;
+}
